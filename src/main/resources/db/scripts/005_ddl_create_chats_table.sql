@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS chats (
+    id SERIAL PRIMARY KEY,
+    sender INT NOT NULL REFERENCES users(id),
+    recipient INT NOT NULL REFERENCES users(id),
+    description VARCHAR(1000),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
