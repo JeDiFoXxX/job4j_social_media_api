@@ -24,6 +24,10 @@ mvnw.cmd
 *.iml
 *.ipr
 
+# H2 Database files
+*.mv.db
+*.trace.db
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

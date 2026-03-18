@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS photos (
     id SERIAL PRIMARY KEY,
-    posto_id INT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    post_id INT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
     photo_name VARCHAR(512) NOT NULL,
     photo_url  VARCHAR(512) NOT NULL
 );
