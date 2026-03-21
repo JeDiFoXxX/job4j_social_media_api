@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
+import org.springframework.data.domain.PageRequest;
 import ru.job4j.model.Post;
+import ru.job4j.model.Subscription;
 import ru.job4j.model.User;
 
 import java.util.List;
@@ -19,9 +21,13 @@ class PostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
     private final List<User> users = List.of(
             new User("user1", "password", "email1"),
-            new User("user2", "password", "email2")
+            new User("user2", "password", "email2"),
+            new User("user3", "password", "email3")
     );
 
     @Test
@@ -41,5 +47,23 @@ class PostRepositoryTest {
         postRepository.save(post);
         userRepository.deleteAllInBatch();
         assertThat(0).isEqualTo(postRepository.findAll().size());
+    }
+
+    @Test
+    public void findFeedByUserIdWithPagination() {
+        userRepository.saveAll(users);
+        subscriptionRepository.save(new Subscription(users.get(0), users.get(1)));
+        subscriptionRepository.save(new Subscription(users.get(0), users.get(2)));
+        postRepository.saveAndFlush(new Post(users.get(1), "title3", "description3"));
+        postRepository.saveAndFlush(new Post(users.get(2), "title2", "description2"));
+        postRepository.saveAndFlush(new Post(users.get(1), "title1", "description1"));
+        List<String> expected = postRepository
+                .findFeedByUserIdWithPagination(users.get(0).getId(),
+                        PageRequest.of(0, 2))
+                .stream()
+                .map(Post::getTitle)
+                .toList();
+        System.out.println(expected);
+        assertThat(List.of("title1", "title2")).containsExactlyElementsOf(expected);
     }
 }
