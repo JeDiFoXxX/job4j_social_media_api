@@ -51,6 +51,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     """, nativeQuery = true)
     int deletePhotoByPostId(@Param("postId") Long postId);
 
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(
+            value = """
+                    DELETE FROM photos
+                    WHERE post_id = :postId
+                    AND id IN (:photoIds)
+                    """, nativeQuery = true)
+    int deleteByPostIdAndPhotoIds(@Param("postId") Long postId,
+                                  @Param("photoIds") List<Long> photoIds);
+
     @Query(
             value = """
                     SELECT p.* FROM posts p

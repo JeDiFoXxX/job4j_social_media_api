@@ -23,9 +23,11 @@ public class Post {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @Setter
     @Column(length = 100, nullable = false)
     private String title;
 
+    @Setter
     @Column(length = 1000, nullable = false)
     private String description;
 

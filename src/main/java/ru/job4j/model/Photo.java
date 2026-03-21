@@ -19,6 +19,7 @@ public class Photo {
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @Setter
     private Post post;
 
     @Column(name = "photo_name", length = 512, nullable = false)
