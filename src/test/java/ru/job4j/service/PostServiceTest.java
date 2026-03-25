@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Import;
 import java.util.List;
 
 import ru.job4j.model.Photo;
-import ru.job4j.model.Post;
 import ru.job4j.model.User;
 import ru.job4j.repository.PhotoRepository;
 import ru.job4j.repository.PostRepository;
@@ -65,7 +64,7 @@ class PostServiceTest {
         postService.addPost(users.get(0), "title", "description", List.of(photo));
         var foundPost = postRepository.findAll();
         var foundPhoto = photoRepository.findAll();
-        var expected = postService.deletePhoto(foundPost.get(0), List.of(foundPhoto.get(0).getId()));
+        var expected = postService.deletePhoto(foundPost.get(0).getId(), List.of(foundPhoto.get(0).getId()));
         assertThat(1).isEqualTo(expected);
     }
 
@@ -74,19 +73,18 @@ class PostServiceTest {
         userRepository.save(users.get(0));
         postService.addPost(users.get(0), "title", "description", null);
         var foundPost = postRepository.findAll();
-        var expected = postService.deletePost(foundPost.get(0));
+        var expected = postService.deletePost(foundPost.get(0).getId());
         assertThat(1).isEqualTo(expected);
     }
 
     @Test
     public void updatePostContent() {
         userRepository.save(users.get(0));
-        postService.addPost(users.get(0), "title", "description", null);
-        var foundPost = postRepository.findAll();
-        postService.updateTitleAndDescriptionPost(
-                foundPost.get(0),
-                new Post(null, "title1", "description1"));
-        assertThat("title1").isEqualTo(foundPost.get(0).getTitle());
-        assertThat("description1").isEqualTo(foundPost.get(0).getDescription());
+        var foundPost = postService.addPost(users.get(0), "title", "description", null);
+        foundPost.setTitle("newTitle");
+        foundPost.setDescription("newDescription");
+        assertThat(1).isEqualTo(postService.updatePost(foundPost));
+        assertThat("newTitle").isEqualTo(postRepository.findAll().get(0).getTitle());
+        assertThat("newDescription").isEqualTo(postRepository.findAll().get(0).getDescription());
     }
 }

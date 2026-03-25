@@ -22,9 +22,11 @@ public class Photo {
     @Setter
     private Post post;
 
+    @Setter
     @Column(name = "photo_name", length = 512, nullable = false)
     private String name;
 
+    @Setter
     @Column(name = "photo_url",  length = 512, nullable = false)
     private String url;
 
