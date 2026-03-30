@@ -22,8 +22,8 @@ class ChatRepositoryTest {
     private ChatRepository chatRepository;
 
     private final List<User> users = List.of(
-            new User("user1", "password", "email1"),
-            new User("user2", "password", "email2")
+            new User("user1", "123456789A@a", "1@gmail.com"),
+            new User("user2", "987654321A@a", "2@gmail.com")
     );
 
     @Test

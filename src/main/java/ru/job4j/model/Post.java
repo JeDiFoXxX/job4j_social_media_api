@@ -1,6 +1,9 @@
 package ru.job4j.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,13 +24,18 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull(message = "Поле user не может быть пустым")
     private User user;
 
     @Setter
+    @NotBlank(message = "Поле title не может быть пустым")
+    @Size(max = 100, message = "Title не должен превышать 100 символов")
     @Column(length = 100, nullable = false)
     private String title;
 
     @Setter
+    @NotBlank(message = "Поле description не может быть пустым")
+    @Size(max = 1000, message = "Description не должен превышать 1000 символов")
     @Column(length = 1000, nullable = false)
     private String description;
 

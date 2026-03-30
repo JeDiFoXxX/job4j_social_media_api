@@ -31,7 +31,7 @@ public class PostService {
     @Transactional(rollbackFor = {Exception.class})
     public List<Photo> addPhoto(Long postId, List<Photo> photos) {
         Post post = postRepository.getReferenceById(postId);
-        if (photos != null && !photos.isEmpty()) {
+        if (!photos.isEmpty()) {
             for (Photo photo : photos) {
                 photo.setPost(post);
             }

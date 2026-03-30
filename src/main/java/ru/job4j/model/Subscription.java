@@ -1,6 +1,7 @@
 package ru.job4j.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -27,11 +28,13 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "follower_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull(message = "Поле follower не может быть пустым")
     private User follower;
 
     @ManyToOne
     @JoinColumn(name = "followed_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull(message = "Поле followed не может быть пустым")
     private User followed;
 
     public Subscription(User follower, User followed) {

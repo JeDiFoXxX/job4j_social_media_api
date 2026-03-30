@@ -1,6 +1,7 @@
 package ru.job4j.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -27,10 +28,12 @@ public class Friendship {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull(message = "Поле user не может быть пустым")
     private User user;
 
     @OneToOne
     @JoinColumn(name = "friend_id", nullable = false)
+    @NotNull(message = "Поле friend не может быть пустым")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User friend;
 

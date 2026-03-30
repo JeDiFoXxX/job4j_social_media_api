@@ -31,14 +31,14 @@ class PostServiceTest {
     private PostService postService;
 
     private final List<User> users = List.of(
-            new User("user1", "password", "email1"),
-            new User("user2", "password", "email2")
+            new User("user1", "123456789A@a", "1@gmail.com"),
+            new User("user2", "987654321A@a", "2@gmail.com")
     );
 
     @Test
     public void addPostSimple() {
         userRepository.save(users.get(0));
-        postService.addPost(users.get(0), "title", "description", null);
+        postService.addPost(users.get(0), "title", "description", List.of());
         var foundPost = postRepository.findAll();
         assertThat("title").isEqualTo(foundPost.get(0).getTitle());
         assertThat("description").isEqualTo(foundPost.get(0).getDescription());
@@ -71,7 +71,7 @@ class PostServiceTest {
     @Test
     public void deletePostFull() {
         userRepository.save(users.get(0));
-        postService.addPost(users.get(0), "title", "description", null);
+        postService.addPost(users.get(0), "title", "description", List.of());
         var foundPost = postRepository.findAll();
         var expected = postService.deletePost(foundPost.get(0).getId());
         assertThat(1).isEqualTo(expected);
@@ -80,7 +80,7 @@ class PostServiceTest {
     @Test
     public void updatePostContent() {
         userRepository.save(users.get(0));
-        var foundPost = postService.addPost(users.get(0), "title", "description", null);
+        var foundPost = postService.addPost(users.get(0), "title", "description", List.of());
         foundPost.setTitle("newTitle");
         foundPost.setDescription("newDescription");
         assertThat(1).isEqualTo(postService.updatePost(foundPost));
