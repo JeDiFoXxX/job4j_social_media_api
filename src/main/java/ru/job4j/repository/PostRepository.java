@@ -16,13 +16,19 @@ import ru.job4j.model.Photo;
 import ru.job4j.model.Post;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
+    @Transactional(readOnly = true)
     List<Post> findAllByUserId(Long userId);
 
+    @Transactional(readOnly = true)
     List<Post> findByUserIdAndCreateAtBetween(Long userId, Instant after, Instant before);
 
+    @Transactional(readOnly = true)
     Page<Post> findByUserIdOrderByCreateAtDesc(Long userId, Pageable pageable);
 
-    @Transactional
+    @Transactional(readOnly = true)
+    List<Post> findAllByUserIdInOrderByCreateAtDesc(List<Long> userIds);
+
+    @Transactional(readOnly = true)
     @Query(
             value = """
                     SELECT * FROM photos

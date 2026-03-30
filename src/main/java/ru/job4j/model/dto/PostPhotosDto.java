@@ -14,7 +14,7 @@ import ru.job4j.model.User;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostRequest {
+public class PostPhotosDto {
     private User user;
     private String title;
     private String description;

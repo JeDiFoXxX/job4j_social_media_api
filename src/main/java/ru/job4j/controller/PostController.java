@@ -4,14 +4,14 @@ package ru.job4j.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import ru.job4j.model.Photo;
 import ru.job4j.model.Post;
-import ru.job4j.model.dto.PostRequest;
+import ru.job4j.model.dto.PostPhotosDto;
+import ru.job4j.model.dto.UserPostsDto;
 import ru.job4j.service.PostService;
 
 import java.util.List;
@@ -23,12 +23,12 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<Post> add(@RequestBody PostRequest postRequest) {
+    public ResponseEntity<Post> add(@RequestBody PostPhotosDto postPhotosDto) {
         var savePost = postService.addPost(
-                postRequest.getUser(),
-                postRequest.getTitle(),
-                postRequest.getDescription(),
-                postRequest.getPhotos()
+                postPhotosDto.getUser(),
+                postPhotosDto.getTitle(),
+                postPhotosDto.getDescription(),
+                postPhotosDto.getPhotos()
         );
         var uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -46,6 +46,12 @@ public class PostController {
         var savePhotos = postService.addPhoto(postId, photos);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(uri).body(savePhotos);
+    }
+
+    @GetMapping("/{userId}/posts")
+    public ResponseEntity<List<UserPostsDto>> getUserPosts(@PathVariable("userId") List<Long> userIds) {
+        var posts = postService.getUserPostsDto(userIds);
+        return !posts.isEmpty() ? ResponseEntity.ok(posts) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{postId}")

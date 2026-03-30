@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import ru.job4j.model.Photo;
 import ru.job4j.model.Post;
 import ru.job4j.model.User;
+import ru.job4j.model.dto.UserPostsDto;
 import ru.job4j.repository.PhotoRepository;
 import ru.job4j.repository.PostRepository;
 
@@ -37,6 +38,22 @@ public class PostService {
             photoRepository.saveAll(photos);
         }
         return photos;
+    }
+
+    @Transactional
+    public List<UserPostsDto> getUserPostsDto(List<Long> userIds) {
+        return postRepository.findAllByUserIdInOrderByCreateAtDesc(userIds)
+                .stream()
+                .collect(Collectors.groupingBy(Post::getUser))
+                .entrySet()
+                .stream()
+                .map(entry -> new UserPostsDto(
+                        entry.getKey().getId(),
+                        entry.getKey().getUsername(),
+                        entry.getValue()
+                ))
+                .sorted(Comparator.comparing(UserPostsDto::getUserId))
+                .toList();
     }
 
     @Transactional(rollbackFor = {Exception.class})
