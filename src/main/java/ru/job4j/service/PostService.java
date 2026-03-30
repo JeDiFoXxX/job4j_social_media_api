@@ -90,7 +90,7 @@ public class PostService {
     @Transactional(rollbackFor = {Exception.class})
     public int deletePhoto(Long postId, List<Long> photoIds) {
         var rsl = 0;
-        if (photoIds != null && !photoIds.isEmpty()) {
+        if (!photoIds.isEmpty()) {
             rsl = postRepository.deleteByPostIdAndPhotoIds(postId, photoIds);
         }
         return rsl;
