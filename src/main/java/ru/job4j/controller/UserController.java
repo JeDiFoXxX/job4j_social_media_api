@@ -23,13 +23,13 @@ import ru.job4j.service.UserService;
 @Validated
 @RestController
 @AllArgsConstructor
+@ApiBadRequestResponse
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
 
     @Operation(summary = "Добавить пользователя")
     @ApiCreatedResponse
-    @ApiBadRequestResponse
     @PostMapping
     public ResponseEntity<User> add(@Valid
                                     @RequestBody User user) {
@@ -46,7 +46,6 @@ public class UserController {
 
     @Operation(summary = "Получить данные пользователя")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @GetMapping("/{userId}")
     public ResponseEntity<User> get(@Min(value = 1, message = "Id не может быть меньше 1")
@@ -58,7 +57,6 @@ public class UserController {
 
     @Operation(summary = "Изменить данные пользователя")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @PutMapping
     public ResponseEntity<Void> update(@Valid
@@ -70,7 +68,6 @@ public class UserController {
 
     @Operation(summary = "Удалить пользователя")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> delete(@Min(value = 1, message = "Id не может быть меньше 1")

@@ -30,13 +30,13 @@ import java.util.List;
 @Validated
 @RestController
 @AllArgsConstructor
+@ApiBadRequestResponse
 @RequestMapping("/api/post")
 public class PostController {
     private final PostService postService;
 
     @Operation(summary = "Добавить пост")
     @ApiCreatedResponse
-    @ApiBadRequestResponse
     @PostMapping
     public ResponseEntity<Post> add(@Valid @RequestBody PostPhotosDto postPhotosDto) {
         var savePost = postService.addPost(
@@ -57,7 +57,6 @@ public class PostController {
 
     @Operation(summary = "Добавить фото к посту")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @PostMapping("/{postId}/photo")
     public ResponseEntity<List<Photo>> addPhoto(@Min(value = 1, message = "Id не может быть меньше 1")
                                                 @PathVariable("postId") Long postId,
@@ -71,7 +70,6 @@ public class PostController {
 
     @Operation(summary = "Получить посты пользователя")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @GetMapping("/{userIds}/posts")
     public ResponseEntity<List<UserPostsDto>> getUserPosts(
@@ -83,7 +81,6 @@ public class PostController {
 
     @Operation(summary = "Получить пост")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @GetMapping("/{postId}")
     public ResponseEntity<Post> get(@Min(value = 1, message = "Id не может быть меньше 1")
@@ -95,7 +92,6 @@ public class PostController {
 
     @Operation(summary = "Получить фото поста")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @GetMapping("/{postId}/photo")
     public ResponseEntity<List<Photo>> getPhoto(@Min(value = 1, message = "Id не может быть меньше 1")
@@ -105,7 +101,6 @@ public class PostController {
 
     @Operation(summary = "Изменить данные поста")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @PutMapping
     public ResponseEntity<Void> update(@Valid
@@ -117,7 +112,6 @@ public class PostController {
 
     @Operation(summary = "Удалить пост")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @DeleteMapping("/{postId}")
     public ResponseEntity<Void> delete(@Min(value = 1, message = "Id не может быть меньше 1")
@@ -129,7 +123,6 @@ public class PostController {
 
     @Operation(summary = "Удалить фото поста")
     @ApiOkResponse
-    @ApiBadRequestResponse
     @ApiNotFoundResponse
     @DeleteMapping("/{postId}/photo")
     public ResponseEntity<Void> deletePhoto(@Min(value = 1, message = "Id не может быть меньше 1")

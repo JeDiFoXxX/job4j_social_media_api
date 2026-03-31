@@ -15,26 +15,31 @@ import java.util.List;
 import ru.job4j.model.Photo;
 import ru.job4j.model.Post;
 
+@Transactional(readOnly = true)
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Transactional(readOnly = true)
     List<Post> findAllByUserId(Long userId);
 
-    @Transactional(readOnly = true)
     List<Post> findByUserIdAndCreateAtBetween(Long userId, Instant after, Instant before);
 
-    @Transactional(readOnly = true)
     Page<Post> findByUserIdOrderByCreateAtDesc(Long userId, Pageable pageable);
 
-    @Transactional(readOnly = true)
     List<Post> findAllByUserIdInOrderByCreateAtDesc(List<Long> userIds);
 
-    @Transactional(readOnly = true)
     @Query(
             value = """
                     SELECT * FROM photos
                     WHERE post_id = :postId
                     """, nativeQuery = true)
     List<Photo> findAllPhotosByPostId(@Param("postId") Long postId);
+
+    @Query(
+            value = """
+                    SELECT p.* FROM posts p
+                    JOIN subscriptions s ON s.followed_id = p.user_id
+                    WHERE s.follower_id = :userId
+                    ORDER BY p.created_at DESC
+                    """, nativeQuery = true)
+    Page<Post> findFeedByUserIdWithPagination(@Param("userId") Long userId, Pageable pageable);
 
     @Transactional
     @Modifying(clearAutomatically = true)
@@ -76,13 +81,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     """, nativeQuery = true)
     int deleteByPostIdAndPhotoIds(@Param("postId") Long postId,
                                   @Param("photoIds") List<Long> photoIds);
-
-    @Query(
-            value = """
-                    SELECT p.* FROM posts p
-                    JOIN subscriptions s ON s.followed_id = p.user_id
-                    WHERE s.follower_id = :userId
-                    ORDER BY p.created_at DESC
-                    """, nativeQuery = true)
-    Page<Post> findFeedByUserIdWithPagination(@Param("userId") Long userId, Pageable pageable);
 }

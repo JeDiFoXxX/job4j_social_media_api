@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import ru.job4j.model.User;
 
+@Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query(
             value = """
