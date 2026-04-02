@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <include file="classpath:db/changelog/scripts/001_ddl_create_users_table.sql"/>
+    <include file="classpath:db/changelog/scripts/002_ddl_create_subscriptions_table.sql"/>
+    <include file="classpath:db/changelog/scripts/003_ddl_create_posts_table.sql"/>
+    <include file="classpath:db/changelog/scripts/004_ddl_create_friendships_table.sql"/>
+    <include file="classpath:db/changelog/scripts/005_ddl_create_chats_table.sql"/>
+    <include file="classpath:db/changelog/scripts/006_ddl_create_photos_table.sql"/>
+</databaseChangeLog>
